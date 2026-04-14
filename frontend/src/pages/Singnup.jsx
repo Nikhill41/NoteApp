@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import axiosInstance from '../api/axiosInstance'
 import { toast } from 'react-toastify'
 
 const Signup = () => {
@@ -12,8 +12,8 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.post(
-                "http://localhost:8080/api/register",
+            const response = await axiosInstance.post(
+                '/register',
                 {name, email, password}
             )
             if (response.data.success) {

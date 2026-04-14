@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import axiosInstance from '../api/axiosInstance'
 import { useAuth } from '../context/ContextProvider'
 import { toast } from 'react-toastify'
 
@@ -13,8 +13,8 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.post(
-                "http://localhost:8080/api/login",
+            const response = await axiosInstance.post(
+                '/login',
                 {email, password}
             )
             if (response.data.success) {
