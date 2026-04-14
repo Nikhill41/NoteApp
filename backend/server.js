@@ -12,7 +12,7 @@ const  noteRouter  = require('./routes/note')
 
 app.use(express.json());
 app.use(cors({
-    origin:"http://localhost:3000",
+    origin:process.env.FRONTEND_PORT,
     credentials:true
 }))
 
