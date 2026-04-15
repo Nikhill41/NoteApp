@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cors({
     origin: [
         process.env.FRONTEND_PORT,
-        "https://note-app-nikhil.netlify.app/"
+        "https://note-app-nikhil.netlify.app"
     ],
     credentials: true   // ✅ VERY IMPORTANT
 }));
