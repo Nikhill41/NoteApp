@@ -56,6 +56,11 @@ const Login = () => {
                         <button className="w-full bg-blue-600 text-white py-2 rounded text-sm">
                             Login
                         </button>
+                        <div className="mt-4 p-3 bg-gray-100 rounded text-sm text-gray-700 border">
+       <p className="font-semibold text-gray-800 mb-1">Demo Credentials:</p>
+       <p>Email: <span className="font-mono">riskv49@gmail.com</span></p>
+       <p>Password: <span className="font-mono">admin</span></p>
+   </div>
                         <p className="text-center text-sm text-gray-500 mt-4">
                             Don't have an account?
                             <Link to="/register" className="text-blue-500"> Signup</Link>
