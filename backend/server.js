@@ -13,12 +13,10 @@ const  noteRouter  = require('./routes/note')
 app.use(express.json());
 app.use(cors({
     origin: [
-        "http://localhost:3000",
-        process.env.FRONTEND_URL ,
+        process.env.FRONTEND_PORT,
         "https://notes-app-mu-neon.vercel.app"
     ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"]
+    credentials: true   // ✅ VERY IMPORTANT
 }));
 
 
