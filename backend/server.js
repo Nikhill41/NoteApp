@@ -26,6 +26,9 @@ connectToMongo()
 app.use('/api',authRouter);
 app.use('/api/note',noteRouter);
 
+
+
+
 app.listen(PORT,()=>{
     
     console.log("server running");
