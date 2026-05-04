@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import NoteModal from '../components/NoteModal'
 import NoteGrid from '../components/NoteGrid'
-import ConfirmModal from '../components/ConfirmModal'       // ✅ import
+import ConfirmModal from '../components/ConfirmModal'
+import ViewNoteModal from '../components/ViewNoteModal'
 import useNotes from '../hooks/useNotes'
 import { useAuth } from '../context/ContextProvider'
 import { useNavigate } from 'react-router-dom'
@@ -11,7 +12,8 @@ function Home() {
     const [isModalOpen, setModalOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState("")
     const [selectedNote, setSelectedNote] = useState(null)
-    const [noteToDelete, setNoteToDelete] = useState(null) // ✅ note waiting to be deleted
+    const [noteToDelete, setNoteToDelete] = useState(null)
+    const [viewNote, setViewNote] = useState(null)
     const { user } = useAuth()
     const navigate = useNavigate()
     const { notes, loading, fetchNotes, addNote, updateNote, deleteNote } = useNotes()
@@ -22,6 +24,7 @@ function Home() {
     }, [user])
 
     const handleEdit = (note) => {
+        setViewNote(null)
         setSelectedNote(note)
         setModalOpen(true)
     }
@@ -29,6 +32,10 @@ function Home() {
     const handleClose = () => {
         setModalOpen(false)
         setSelectedNote(null)
+    }
+
+    const handleViewNote = (note) => {
+        setViewNote(note)
     }
 
     // ✅ Step 1: user clicks delete → store note → open confirm modal
@@ -40,6 +47,7 @@ function Home() {
     const handleConfirmDelete = async () => {
         await deleteNote(noteToDelete._id)
         setNoteToDelete(null)
+        setViewNote(null)
     }
 
     // ✅ Step 3: user cancels → close confirm modal
@@ -63,12 +71,12 @@ function Home() {
     )
 
     return (
-        <div className='bg-gray-100 min-h-screen flex flex-col'>
+        <div className='bg-slate-50 min-h-screen flex flex-col pt-16'>
             <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
 
-            <div className='px-6 pt-6 pb-2'>
-                <h1 className='text-2xl font-bold text-gray-800'>My Notes</h1>
-                <p className='text-sm text-gray-500'>
+            <div className='app-container pt-8 pb-2'>
+                <h1 className='text-3xl font-bold text-slate-800'>My Notes</h1>
+                <p className='text-sm text-slate-600 mt-1'>
                     {searchQuery
                         ? `${filteredNotes.length} result(s) for "${searchQuery}"`
                         : `${notes.length} ${notes.length === 1 ? "note" : "notes"}`
@@ -82,14 +90,15 @@ function Home() {
                 searchQuery={searchQuery}
                 onClear={() => setSearchQuery("")}
                 onEdit={handleEdit}
-                onDelete={handleDeleteClick}   // ✅ now opens confirm first
+                onDelete={handleDeleteClick}
+                onView={handleViewNote}
             />
 
             <button
                 onClick={() => { setSelectedNote(null); setModalOpen(true) }}
-                className='fixed right-6 bottom-6 text-3xl bg-teal-500 text-white
+                className='fixed right-6 bottom-6 text-3xl btn-primary
                 font-bold w-14 h-14 rounded-full shadow-lg
-                hover:bg-teal-600 hover:scale-110 transition-all duration-200
+                hover:shadow-xl hover:scale-110 transition-all duration-200
                 flex items-center justify-center'>
                 +
             </button>
@@ -110,6 +119,16 @@ function Home() {
                     noteTitle={noteToDelete.title}
                     onConfirm={handleConfirmDelete}
                     onCancel={handleCancelDelete}
+                />
+            )}
+
+            {/* View Full Note Modal */}
+            {viewNote && (
+                <ViewNoteModal
+                    note={viewNote}
+                    onClose={() => setViewNote(null)}
+                    onEdit={handleEdit}
+                    onDelete={handleDeleteClick}
                 />
             )}
         </div>

@@ -35,10 +35,9 @@ const NoteModal = ({closeModal, addNote, noteToEdit, updateNote}) => {
     }
 
     return (
-        <div className='fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50' onClick={closeModal}>
-            <div className='bg-white p-8 rounded-2xl shadow-2xl w-96' onClick={(e) => e.stopPropagation()}>
-                {/* ✅ Title changes based on mode */}
-                <h2 className='text-2xl font-bold mb-6 text-gray-800'>
+        <div className='fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50' onClick={closeModal}>
+            <div className='card rounded-lg-2 p-8 w-96 shadow-2xl' onClick={(e) => e.stopPropagation()}>
+                <h2 className='text-2xl font-bold mb-6 text-slate-800'>
                     {noteToEdit ? "Edit Note ✏️" : "Add New Note 📝"}
                 </h2>
                 <form onSubmit={handleSubmit}>
@@ -47,19 +46,19 @@ const NoteModal = ({closeModal, addNote, noteToEdit, updateNote}) => {
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder='Note Title'
-                        className='border border-gray-300 p-3 w-full mb-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500'
+                        className='input-base w-full mb-4'
                     />
                     <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder='Note Description'
-                        className='border border-gray-300 p-3 w-full mb-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none'
+                        className='input-base w-full mb-6 resize-none'
                         rows='4'
                     />
-                    <button type="submit" className='w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-4 rounded-lg transition duration-200'>
+                    <button type="submit" className='w-full btn-primary py-2.5 rounded-md font-semibold transition duration-200'>
                         {noteToEdit ? "Save Changes" : "Add Note"}
                     </button>
-                    <button type='button' className='mt-4 w-full text-red-500 hover:underline' onClick={closeModal}>
+                    <button type='button' className='mt-4 w-full text-red-600 hover:text-red-700 text-sm font-medium' onClick={closeModal}>
                         Cancel
                     </button>
                 </form>

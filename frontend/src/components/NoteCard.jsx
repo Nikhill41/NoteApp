@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import cardColors from '../constants/colors'
 
-const NoteCard = ({note, index, onEdit, onDelete}) => {
+const NoteCard = ({note, index, onEdit, onDelete, onView}) => {
     const [showOptions, setShowOptions] = useState(false)
 
     const formatDate = (dateStr) => {
@@ -12,17 +12,24 @@ const NoteCard = ({note, index, onEdit, onDelete}) => {
         })
     }
 
+    const handleCardClick = (e) => {
+        if (!showOptions && e.target.closest('button') === null) {
+            onView?.(note)
+        }
+    }
+
     return (
-        <div className={`${cardColors[index % cardColors.length]} 
-            rounded-2xl p-5 shadow-sm hover:shadow-md 
-            transition-all duration-200 hover:-translate-y-1
-            flex flex-col justify-between min-h-[160px]
-            border border-white relative`}
+        <div 
+            onClick={handleCardClick}
+            className={`${cardColors[index % cardColors.length]} rounded-lg p-4 shadow-sm hover:shadow-lg 
+            transition-all duration-200 hover:-translate-y-1 hover:cursor-pointer
+            flex flex-col justify-between h-56 w-full
+            relative border border-white/50`}
         >
             {/* 3-dot menu */}
             <button
                 onClick={() => setShowOptions(!showOptions)}
-                className='absolute top-3 right-3 text-gray-400 hover:text-gray-700 font-bold text-lg leading-none'>
+                className='absolute top-2 right-2 text-gray-400 hover:text-gray-700 font-bold text-lg leading-none'>
                 ⋮
             </button>
 
@@ -42,19 +49,20 @@ const NoteCard = ({note, index, onEdit, onDelete}) => {
                 </div>
             )}
 
-            {/* Content */}
-            <div>
-                <h3 className='text-base font-bold text-gray-800 mb-2 line-clamp-1 pr-6'>
+            {/* Content - Fixed height, scrollable if needed */}
+            <div className='flex-1 overflow-hidden'>
+                <h3 className='text-sm font-bold text-gray-800 mb-1.5 line-clamp-2 pr-6'>
                     {note.title}
                 </h3>
-                <p className='text-sm text-gray-600 line-clamp-4 leading-relaxed'>
+                <p className='text-xs text-gray-600 line-clamp-5 leading-relaxed'>
                     {note.description}
                 </p>
             </div>
 
             {/* Date */}
-            <div className='mt-4 pt-3 border-t border-black/10'>
+            <div className='mt-2 pt-2 border-t border-black/10'>
                 <p className='text-xs text-gray-400'>{formatDate(note.createdAt)}</p>
+                <p className='text-xs text-gray-500 mt-1 font-medium'>Click to view full note</p>
             </div>
         </div>
     )

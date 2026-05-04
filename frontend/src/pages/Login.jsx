@@ -7,12 +7,15 @@ import { toast } from 'react-toastify'
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
     const { login } = useAuth()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        if (loading) return
         try {
+            setLoading(true)
             const response = await axiosInstance.post(
                 '/login',
                 {email, password}
@@ -26,44 +29,65 @@ const Login = () => {
         } catch (error) {
             toast.error(error.response?.data?.message || "Login failed")
             console.log(error)
+        } finally {
+            setLoading(false)
         }
     }
 
     return (
         <div>
-            <nav className="w-full bg-gray-900 px-6 py-3 flex items-center justify-between">
-                <Link to="/" className="text-white text-xl font-bold">NoteApp</Link>
+            <nav className="w-full bg-white shadow-sm border-b border-gray-100 fixed top-0 left-0 z-50">
+                <div className="app-container flex items-center h-16">
+                    <Link to="/" className="text-lg font-bold text-slate-800">
+                        <span className="text-teal-500">Note</span>App
+                    </Link>
+                </div>
             </nav>
 
-            <div className="flex justify-center items-center min-h-screen bg-blue-300">
-                <div className="bg-white p-8 rounded-lg shadow w-80 border">
-                    <h2 className="text-2xl font-bold mb-5 text-gray-800">Login</h2>
+            <div className="flex justify-center items-center min-h-screen bg-slate-50 p-4 pt-20">
+                <div className="card rounded-lg-2 p-8 w-full max-w-sm">
+                    <h2 className="text-2xl font-bold mb-6 text-slate-800">Login</h2>
                     <form onSubmit={handleSubmit}>
-                        <label className="text-sm text-gray-600">Email</label>
-                        <input
-                            type="email"
-                            placeholder="you@example.com"
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full border border-gray-300 rounded px-3 py-2 mt-1 mb-4 text-sm"
-                        />
-                        <label className="text-sm text-gray-600">Password</label>
-                        <input
-                            type="password"
-                            placeholder="••••••••"
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full border border-gray-300 rounded px-3 py-2 mt-1 mb-5 text-sm"
-                        />
-                        <button className="w-full bg-blue-600 text-white py-2 rounded text-sm">
-                            Login
+                        <div className="mb-4">
+                            <label className="text-sm font-medium text-slate-700">Email</label>
+                            <input
+                                type="email"
+                                placeholder="you@example.com"
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="input-base w-full mt-1.5"
+                            />
+                        </div>
+                        <div className="mb-6">
+                            <label className="text-sm font-medium text-slate-700">Password</label>
+                            <input
+                                type="password"
+                                placeholder="••••••••"
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="input-base w-full mt-1.5"
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full btn-primary py-2.5 rounded-md text-sm font-semibold disabled:opacity-60 disabled:cursor-not-allowed"
+                        >
+                            {loading ? "Logging in..." : "Login"}
                         </button>
-                        <div className="mt-4 p-3 bg-gray-100 rounded text-sm text-gray-700 border">
-       <p className="font-semibold text-gray-800 mb-1">Demo Credentials:</p>
-       <p>Email: <span className="font-mono">test.user@gmail.com</span></p>
-       <p>Password: <span className="font-mono">admin</span></p>
-   </div>
-                        <p className="text-center text-sm text-gray-500 mt-4">
+
+                        <div className="mt-5 p-4 bg-blue-50 rounded-lg text-sm text-blue-800 border border-blue-200">
+                            <p className="font-semibold mb-2">⚠️ Backend Notice</p>
+                            <p>Backend deployed on Render. First request may take 50-60 seconds for response due to cold start.</p>
+                        </div>
+
+                        <div className="mt-4 p-3 bg-amber-50 rounded-lg text-sm text-amber-800 border border-amber-200">
+                            <p className="font-semibold text-amber-900 mb-1">Demo Credentials:</p>
+                            <p>Email: <span className="font-mono text-xs">test.user@gmail.com</span></p>
+                            <p>Password: <span className="font-mono text-xs">testpassword@123</span></p>
+                        </div>
+
+                        <p className="text-center text-sm text-slate-600 mt-6">
                             Don't have an account?
-                            <Link to="/register" className="text-blue-500"> Signup</Link>
+                            <Link to="/register" className="text-teal-600 font-semibold hover:text-teal-700"> Signup</Link>
                         </p>
                     </form>
                 </div>
